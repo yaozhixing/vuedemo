@@ -2,9 +2,12 @@
   "name": "vuedemo",
   "version": "1.0.0",
   "description": "vuedemo 练习实例",
-  "main": "index.js",
+  "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --mode development",
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --open"
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,22 @@
     "url": "https://github.com/yaozhixing/vuedemo/issues"
   },
   "homepage": "https://github.com/yaozhixing/vuedemo#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "polyfill-loader": "^0.0.2",
+    "style-loader": "^0.22.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-sources": "^1.1.0"
+  },
   "dependencies": {
     "vue": "^2.5.17"
   }
