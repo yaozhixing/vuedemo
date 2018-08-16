@@ -3,8 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");			//打包html
 const ExtractTextPlugin = require("extract-text-webpack-plugin");	//style分离外部调用
 const CleanWebpackPlugin = require("clean-webpack-plugin");			//清空文件夹
 
-const extractcss = new ExtractTextPlugin("css/[name].one.[chunkhash:10].css");		//打包第一个css
-const extractless = new ExtractTextPlugin("css/[name].two.[chunkhash:10].css");		//打包第二个less转换的css
+const extractcss = new ExtractTextPlugin("[name].one.[chunkhash:10].css");		//打包第一个css
+const extractless = new ExtractTextPlugin("[name].two.[chunkhash:10].css");		//打包第二个less转换的css
 
 const root = path.resolve(__dirname, '../');
 
@@ -29,7 +29,15 @@ module.exports = {
 			/*图片 规则*/
 			{
 				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-				use: ["file-loader?limit=8192&name=images/[name].[ext]"]
+				use: [
+					{
+						loader:"file-loader?limit=8192&name=[name].[ext]",
+						options: {
+							publicPath:'./images/',			//发布目录 ./是css文件和index.html img 的的相对路径
+							outputPath:'images/'			//输出目录 创建文件夹
+						}
+					},
+				]
 			},
 			
 			/*js ES6转换ES5 规则*/
@@ -42,7 +50,26 @@ module.exports = {
 						presets:['env'] 	//稳定版本
 					}
 				}
-			}
+			},
+			
+			{
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: 'file-loader',
+                options: {
+                    limit: 10000,
+                    name: 'fonts/[name].[hash:7].[ext]'
+                }
+            },
+			
+			{
+                test: /\.html$/,
+                loader: 'html-loader',
+                options: {
+                    // 除了img的src,还可以继续配置处理更多html引入的资源
+                    attrs: ['img:src', 'img:data-src', 'audio:src']
+                }
+            },
+			
 		]
 	},
 	
@@ -54,10 +81,8 @@ module.exports = {
 		}),
 		
 		new HtmlWebpackPlugin({
-			hash: true,
-            chunks: ['index'],
-			template:"./index.html",
-            filename: "index.html"
+			hash:true,
+			template:"./src/index.html"
 		}),
 		
 		//打包多个css，css和less转换的css

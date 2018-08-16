@@ -53,7 +53,7 @@ module.exports = {
 			/*图片 规则*/
 			{
 				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-				use: ["file-loader?limit=8192&name=images/[name].[ext]"]
+				use: "file-loader?limit=8192&name=images/[name].[ext]"
 			},
 			
 			/*js ES6转换ES5 规则*/
