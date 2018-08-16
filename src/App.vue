@@ -1,6 +1,10 @@
 <template>
 	<div id="app">
-		<h2>厉害的家伙！</h2>
+		<img src="images/ico2.png">
+		<p>
+			<span><router-link to="/">首页</router-link></span>
+			<span><router-link to="/company">公司介绍</router-link></span>
+		</p>
 		<router-view></router-view>
 	</div>
 </template>
