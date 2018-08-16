@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");			//打包html
 const ExtractTextPlugin = require("extract-text-webpack-plugin");	//style分离外部调用
 const CleanWebpackPlugin = require("clean-webpack-plugin");			//清空文件夹
+const { VueLoaderPlugin } = require("vue-loader");
 
 const extractcss = new ExtractTextPlugin("[name].one.[chunkhash:10].css");		//打包第一个css
 const extractless = new ExtractTextPlugin("[name].two.[chunkhash:10].css");		//打包第二个less转换的css
@@ -11,6 +12,11 @@ const root = path.resolve(__dirname, '../');
 module.exports = {
 	/*入口文件*/
 	entry: path.resolve(root, 'src/main.js'),
+	
+	/*不打包第三方包，vue,jquery 会自己用script src引入*/
+	externals:{
+		vue:"Vue"
+	},
 	
 	module: {
 		rules: [
@@ -52,6 +58,7 @@ module.exports = {
 				}
 			},
 			
+			/*字体*/
 			{
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'file-loader',
@@ -61,6 +68,7 @@ module.exports = {
                 }
             },
 			
+			/*html*/
 			{
                 test: /\.html$/,
                 loader: 'html-loader',
@@ -69,6 +77,12 @@ module.exports = {
                     attrs: ['img:src', 'img:data-src', 'audio:src']
                 }
             },
+			
+			/*vue*/
+			{
+				test:/\.vue$/,
+				use:["vue-loader"]
+			}
 			
 		]
 	},
@@ -82,12 +96,15 @@ module.exports = {
 		
 		new HtmlWebpackPlugin({
 			hash:true,
-			template:"./src/index.html"
+			template:"./index.html"
 		}),
 		
 		//打包多个css，css和less转换的css
 		extractcss,
-		extractless
+		extractless,
+		
+		new VueLoaderPlugin()
+		
 	]
 		
 };
